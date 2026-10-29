@@ -379,6 +379,12 @@ Existen variables que, a priori, no tienen demasiado interés para el estudio qu
 * En el data frame  `planes` quédate con todas las variables excepto `speed` y `type`.
 
 ```{r }
+flights$hour <- NULL
+
+flights[-grep("time$",colnames(flights))]
+
+planes$speed <- NULL
+planes$type <- NULL
 
 ```
 
