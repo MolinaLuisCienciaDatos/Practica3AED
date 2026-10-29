@@ -282,10 +282,10 @@ Obtén la versión _tidy_ del conjunto de datos `weather` utilizando las funcion
 
 weather_tidy <- raw %>% pivot_longer(cols = paste("d",1:31,sep=""),names_to = "Día",values_to= "Temp_Measure",values_drop_na = T) 
 
-weather_tidy$Día <- .
+weather_tidy$Día <-  gsub("\\D+", "", weather_tidy$Día)
 
 weather_tidy<- weather_tidy %>% pivot_wider(names_from=element,values_from=Temp_Measure) %>%
-  unite(col="Fecha",sep="/",Día,month,year)
+  unite(col="Fecha",sep="/",year,month,Día)
 
 ```
 
