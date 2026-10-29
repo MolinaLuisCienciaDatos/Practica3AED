@@ -207,8 +207,9 @@ Para convertir este conjunto a formato _tidy_ tendremos que agrupar todas las co
 Convierte el dataset `pew_religion` a formato _tidy_ usando `gather`. La columna `income` debe contener una variable de tipo `factor`.
 
 ```{r}
-
-
+pew_religion_tidy <- pew_religion %>% gather(key = "income",value = "cases",2:11)
+pew_religion_tidy$income <- factor(x = pew_religion_tidy$income,ordered = T)
+head(pew_religion_tidy)
 ```
 
 Otro ejemplo usando el conjunto de datos `Billboard` que muestra cuando una canción entró en el top 100.
@@ -229,8 +230,8 @@ Obtén la versión _tidy_ de este conjunto de datos usando `pivot_longer`.
 Consejo: puedes eliminar el prefijo `wk` de las semanas mediante el argumento `names_prefix`. Opcionalmente puedes crear una columna `date` a partir de `date.entered`, sumando las semanas transcurridas desde la fecha de entrada en lista.
 
 ```{r}
-
-
+billboard_tidy <- billboard %>% pivot_longer(paste("wk",1:76,sep=""),names_to = "week",values_to="rank")
+head(billboard_tidy)
 ```
 
 
@@ -252,6 +253,10 @@ Para pasar a formato _tidy_ necesitamos realizar dos operaciones en este caso. E
 Convierte el conjunto de datos TB en _tidy_ utilizando `gather` y `separate`.
 
 ```{r}
+dim(raw)
+tb_tidy <- raw
+# Agrupamos las posibles edades en una columna, y  Separamos la columna en columna sexo y columna edad 
+tb_tidy <- raw%>% gather(key = "Edad",value = "Casos",3:18)%>% separate(Edad,into=c("Sexo","Edad"),sep = 1)
 
 ```
 
@@ -275,6 +280,12 @@ Obtén la versión _tidy_ del conjunto de datos `weather` utilizando las funcion
 
 ```{r}
 
+weather_tidy <- raw %>% pivot_longer(cols = paste("d",1:31,sep=""),names_to = "Día",values_to= "Temp_Measure",values_drop_na = T) 
+
+weather_tidy$
+
+weather_tidy<- weather_tidy %>% pivot_wider(names_from=element,values_from=Temp_Measure) %>%
+  unite(col="Fecha",sep="/",Día,month,year)
 
 ```
 
