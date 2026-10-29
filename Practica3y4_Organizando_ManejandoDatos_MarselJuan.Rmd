@@ -2,15 +2,15 @@
 title: "Práctica 3 y 4. Preparación y manejo de Datos"
 subtitle: "Análisis Exploratorio de Datos, Máster en Ciencia de Datos - UV"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: 3
+    number_sections: no
   html_document:
     echo: yes
     number_sections: no
     theme: lumen
     toc: yes
-  pdf_document:
-    toc: yes
-    toc_depth: 3
-    number_sections: no
 ---
 
 ```{r setup, cache=F, echo=F, message=F, warning=F, tidy=F}
@@ -230,7 +230,7 @@ Obtén la versión _tidy_ de este conjunto de datos usando `pivot_longer`.
 Consejo: puedes eliminar el prefijo `wk` de las semanas mediante el argumento `names_prefix`. Opcionalmente puedes crear una columna `date` a partir de `date.entered`, sumando las semanas transcurridas desde la fecha de entrada en lista.
 
 ```{r}
-billboard_tidy <- billboard %>% pivot_longer(paste("wk",1:76,sep=""),names_to = "week",values_to="rank")
+billboard_tidy <- raw %>% pivot_longer(paste("wk",1:76,sep=""),names_to = "week",values_to="rank")
 head(billboard_tidy)
 ```
 
@@ -420,8 +420,11 @@ Separa los datos _tidy_ que teníamos en el ejercicio 2 en dos tablas (data fram
 Opcionalmente se puede crear un identificador, `id`, asociado al nombre de la canción (`track`), y en la tabla de ranking solo usaremos este identificador en lugar del nombre de la canción.
 
 ```{r}
+tabla_canciones <- billboard_tidy%>% select("artist","track","time") %>% unique()
 
+tabla_canciones$id <- 1:dim(tabla_canciones)[[1]]
 
+tabla_ranking <- billboard_tidy %>%   left_join(tabla_canciones, by = c("artist", "track", "time")) %>% select("track","week","rank")
 
 ```
 
